@@ -4,9 +4,10 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  // comprobamos la contraseña que face age manda en la cabecera
+  // comprobamos la contraseña que face age manda en la cabecera, leída de una
+  // variable de entorno en vez de estar fija en el código
   const token = req.headers['x-auth-token'];
-  if (token !== 'skintrip-2026') {
+  if (!process.env.WEBHOOK_TOKEN || token !== process.env.WEBHOOK_TOKEN) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
